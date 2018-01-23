@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{tikz}
+
+
+\newcounter{phasorCounter}
+\setcounter{phasorCounter}{1}
+\newcommand{\anglerad}{\the\numexpr\value{phasorCounter}}
+\newcommand{\drawphasor}[3]{
+% #1 = magnitude
+% #2 = angle
+% #3 = label
+	%---To determine color--%
+	\pgfmathrandomitem{\RandomColor}{MyRandomColors}
+    
+	%--Set coord---%
+	\coordinate (#3) at (#2:#1); %vector 1
+    
+	%---Draw arrow--%
+	\draw[->,thick,\RandomColor] (0,0) -- (#3) node[right] {$#3$};
+    
+	%---Draw angle---%
+    \renewcommand{\anglerad}{\the\numexpr 5* #1 \relax}
+    
+	\draw [\RandomColor, thick] (\anglerad mm,0) arc [start angle=0, end angle=#2, radius= \anglerad mm]
+    	node [midway, right] {$\phi = #2$};
+        \stepcounter{phasorCounter}
+        \pgfmathrandomitem{\RandomColor}{MyRandomColors}
+}
+
+\begin{document}
+
+%Use the following command in a Tikz environment:
+\drawphasor{%Magnitude}{%Angle}{%Label}
+
+\end{document}
